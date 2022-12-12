@@ -45,7 +45,6 @@ async function sendMorningMessage() {
             text: {
               type: "plain_text",
               text: "Join",
-              emoji: true,
             },
             action_id: "button_click",
           },
@@ -78,7 +77,7 @@ app.action("button_click", async ({ body, ack, say }) => {
   joinedAlgoMembers.push(member[body.user.id]);
   const join = joinedAlgoMembers.join();
 
-  await ack();
+  await act();
   await say(`<${join}> joined in today's Algo`);
 });
 
