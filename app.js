@@ -29,8 +29,19 @@ expressReceiver.router.post("/slack/events", (req, res) => {
   res.send(req.data);
 });
 
-expressReceiver.router.post("/slack/actions", (req, res) => {
-  console.log("hihihiiihihihi");
+expressReceiver.router.post("/slack/actions", async (req, res) => {
+  console.log(req);
+
+  // try {
+  //   console.log("click", body);
+  //   joinedAlgoMembers.push(member[body.user.id]);
+  //   const join = joinedAlgoMembers.join();
+
+  //   await ack();
+  //   await say(`<${join}> joined in today's Algo`);
+  // } catch (err) {
+  //   console.log(err);
+  // }
   res.send(req.data);
 });
 
@@ -42,28 +53,6 @@ const member = {
   U04F5QP3WE4: "길지문",
   U04FCUV0DCY: "test계정",
 };
-
-// receiver.router.get("/slack/events", (_req, res) => {
-//   console.log("req");
-//   res.send("You can access this page without x-slack- headers!");
-// });
-
-// receiver.router.post("/slack/actions", (_req, res) => {
-//   // app.action("button_click", async ({ body, ack, say }) => {
-//   //   try {
-//   //     console.log("click", body);
-//   //     joinedAlgoMembers.push(member[body.user.id]);
-//   //     const join = joinedAlgoMembers.join();
-
-//   //     await ack();
-//   //     await say(`<${join}> joined in today's Algo`);
-//   //   } catch (err) {
-//   //     console.log(err);
-//   //   }
-//   // });
-//   console.log("pst");
-//   res.send({ text: "test" });
-// });
 
 async function sendMorningMessage() {
   try {
