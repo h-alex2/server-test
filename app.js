@@ -2,48 +2,38 @@ const { App, ExpressReceiver } = require("@slack/bolt");
 const schedule = require("node-schedule");
 const generateRandomReviewer = require("./utils/generateRandomReviewer.js");
 
-const expressReceiver = new ExpressReceiver({
-  signingSecret: process.env.SLACK_SIGNING_SECRET,
-  endpoints: "/slack/events",
-});
+// const expressReceiver = new ExpressReceiver({
+//   signingSecret: process.env.SLACK_SIGNING_SECRET,
+//   endpoints: "/slack/events",
+// });
 
 // Initializes your app with your bot token and signing secret
 const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
   signingSecret: process.env.SLACK_SIGNING_SECRET,
   port: process.env.PORT || 3000,
-  receiver: expressReceiver,
+  // receiver: expressReceiver,
 });
 
-const expressApp = expressReceiver.app;
+// const expressApp = expressReceiver.app;
 
-const { WebClient } = require("@slack/web-api");
-app.client = new WebClient(process.env.SLACK_APP_TOKEN);
+// const { WebClient } = require("@slack/web-api");
+// app.client = new WebClient(process.env.SLACK_APP_TOKEN);
 
-expressReceiver.router.post("/", (req, res) => {
-  const payload = JSON.parse(req.body.payload);
-  res.send(req.data);
-});
+// expressReceiver.router.post("/", (req, res) => {
+//   const payload = JSON.parse(req.body.payload);
+//   res.send(req.data);
+// });
 
-expressReceiver.router.post("/slack/events", (req, res) => {
-  res.send(req.data);
-});
+// expressReceiver.router.post("/slack/events", (req, res) => {
+//   res.send(req.data);
+// });
 
-expressReceiver.router.post("/slack/actions", async (req, res) => {
-  console.log(req);
+// expressReceiver.router.post("/slack/actions", async (req, res) => {
+//   console.log(req);
 
-  // try {
-  //   console.log("click", body);
-  //   joinedAlgoMembers.push(member[body.user.id]);
-  //   const join = joinedAlgoMembers.join();
-
-  //   await ack();
-  //   await say(`<${join}> joined in today's Algo`);
-  // } catch (err) {
-  //   console.log(err);
-  // }
-  res.send(req.data);
-});
+//   res.send(req.data);
+// });
 
 const joinedAlgoMembers = [];
 
@@ -216,16 +206,16 @@ app.error((error) => {
 
 (async () => {
   // Start your app
-  // await app.start();
-  expressApp.listen(process.env.PORT || 3000);
+  await app.start();
+  // expressApp.listen(process.env.PORT || 3000);
 
   console.log("⚡️ Bolt app is running!");
 })();
 
-module.exports.app = function (req, res) {
-  console.log(`Got a request: ${JSON.stringify(req.headers)}`);
-  if (req.rawBody) {
-    console.log(`Got raw request: ${req.rawBody}`);
-  }
-  expressApp(req, res);
-};
+// module.exports.app = function (req, res) {
+//   console.log(`Got a request: ${JSON.stringify(req.headers)}`);
+//   if (req.rawBody) {
+//     console.log(`Got raw request: ${req.rawBody}`);
+//   }
+//   expressApp(req, res);
+// };
