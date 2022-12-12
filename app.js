@@ -151,6 +151,10 @@ app.message("스케줄 테스트", async ({ message, say }) => {
       sendMorningMessage();
     }
   );
+
+  await say(
+    `스케줄 테스트 실행 ${today.getHours() + 9}시 ${today.getMinutes() + 1}에 실행됩니다. }`
+  );
 });
 
 (async () => {
