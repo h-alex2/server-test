@@ -74,8 +74,6 @@ async function sendReviewer() {
   }
 }
 
-const today = new Date();
-
 let morningSheduleObj = null;
 let reviewerSheduleObj = null;
 
@@ -132,6 +130,8 @@ app.message("문제 업로드 완료", async ({ message, say }) => {
 });
 
 app.message("스케줄 테스트", async ({ message, say }) => {
+  const today = new Date();
+
   const testMessageRule = new schedule.RecurrenceRule();
 
   testMessageRule.dayOfWeek = [0, 1, 2, 4, 6];
@@ -153,7 +153,9 @@ app.message("스케줄 테스트", async ({ message, say }) => {
   );
 
   await say(
-    `스케줄 테스트 실행 ${today.getHours() + 9}시 ${today.getMinutes() + 1}에 실행됩니다. }`
+    `스케줄 테스트 실행 ${today.getHours() + 9}시 ${
+      today.getMinutes() + 1
+    }에 실행됩니다.`
   );
 });
 
