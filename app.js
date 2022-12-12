@@ -171,33 +171,34 @@ app.message("문제 업로드 완료", async ({ message, say }) => {
 });
 
 app.message("스케줄 테스트", async ({ message, say }) => {
-  const today = new Date();
+  await sendMorningMessage();
+  // const today = new Date();
 
-  const testMessageRule = new schedule.RecurrenceRule();
+  // const testMessageRule = new schedule.RecurrenceRule();
 
-  testMessageRule.dayOfWeek = [0, 1, 2, 4, 6];
-  testMessageRule.hour = today.getHours() + 9;
-  testMessageRule.minute = today.getMinutes() + 1;
-  testMessageRule.tz = "Asia/Seoul";
+  // testMessageRule.dayOfWeek = [0, 1, 2, 4, 6];
+  // testMessageRule.hour = today.getHours() + 9;
+  // testMessageRule.minute = today.getMinutes() + 1;
+  // testMessageRule.tz = "Asia/Seoul";
 
-  schedule.scheduleJob(testMessageRule, () => {
-    console.log("테스트 메시지 실행");
-    sendMorningMessage();
-  });
+  // schedule.scheduleJob(testMessageRule, () => {
+  //   console.log("테스트 메시지 실행");
+  //   sendMorningMessage();
+  // });
 
-  schedule.scheduleJob(
-    { ...testMessageRule, minute: testMessageRule.minute + 1 },
-    () => {
-      console.log("테스트 메시지2 실행");
-      sendReviewer();
-    }
-  );
+  // schedule.scheduleJob(
+  //   { ...testMessageRule, minute: testMessageRule.minute + 1 },
+  //   () => {
+  //     console.log("테스트 메시지2 실행");
+  //     sendReviewer();
+  //   }
+  // );
 
-  await say(
-    `스케줄 테스트 실행 ${today.getHours() + 9}시 ${
-      today.getMinutes() + 1
-    }분에 실행됩니다.`
-  );
+  // await say(
+  //   `스케줄 테스트 실행 ${today.getHours() + 9}시 ${
+  //     today.getMinutes() + 1
+  //   }분에 실행됩니다.`
+  // );
 });
 
 (async () => {
