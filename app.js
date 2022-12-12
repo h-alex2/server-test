@@ -4,7 +4,7 @@ const generateRandomReviewer = require("./utils/generateRandomReviewer.js");
 
 const expressReceiver = new ExpressReceiver({
   signingSecret: process.env.SLACK_SIGNING_SECRET,
-  // endpoints: "/slack/events",
+  endpoints: "/slack/actions",
 });
 
 // Initializes your app with your bot token and signing secret
