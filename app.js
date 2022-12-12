@@ -18,22 +18,22 @@ const app = new App({
 const expressApp = expressReceiver.app;
 
 const { WebClient } = require("@slack/web-api");
-app.client = new WebClient(process.env.SLACK_APP_TOKEN);
+app.client = new WebClient(process.env.SLACK_BOT_TOKEN);
 
-// expressReceiver.router.post("/", (req, res) => {
-//   const payload = JSON.parse(req.body.payload);
-//   res.send(req.data);
-// });
+expressReceiver.router.post("/", (req, res) => {
+  const payload = JSON.parse(req.body.payload);
+  res.send(req.data);
+});
 
-// expressReceiver.router.post("/slack/events", (req, res) => {
-//   res.send(req.data);
-// });
+expressReceiver.router.post("/slack/events", (req, res) => {
+  res.send(req.data);
+});
 
-// expressReceiver.router.post("/slack/actions", async (req, res) => {
-//   console.log(req);
+expressReceiver.router.post("/slack/actions", async (req, res) => {
+  console.log(req.body);
 
-//   res.send(req.data);
-// });
+  res.send(req.data);
+});
 
 const joinedAlgoMembers = [];
 
