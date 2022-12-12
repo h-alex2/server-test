@@ -20,6 +20,19 @@ const expressApp = expressReceiver.app;
 const { WebClient } = require("@slack/web-api");
 app.client = new WebClient(process.env.SLACK_APP_TOKEN);
 
+expressReceiver.router.post('/', (req, res) => {
+  const payload = JSON.parse(req.body.payload)
+  res.send(req.data);
+});
+
+expressReceiver.router.post('/slack/events', (req, res) => {
+  res.send(req.data);
+});
+
+expressReceiver.router.post('/actions', (req, res) => {
+  res.send(req.data);
+});
+
 const joinedAlgoMembers = [];
 
 const member = {
