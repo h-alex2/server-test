@@ -14,6 +14,11 @@ const app = new App({
   receiver: expressReceiver,
 });
 
+const expressApp = expressReceiver.app;
+
+const { WebClient } = require("@slack/web-api");
+app.client = new WebClient(config.SLACK_API_TOKEN);
+
 const joinedAlgoMembers = [];
 
 const member = {
@@ -203,7 +208,16 @@ app.message("스케줄 테스트", async ({ message, say }) => {
 
 (async () => {
   // Start your app
-  await app.start();
+  // await app.start();
+  expressApp.listen(config.SLACK_APP_PORT || 3000);
 
   console.log("⚡️ Bolt app is running!");
 })();
+
+module.exports.app = function (req, res) {
+  console.log(`Got a request: ${JSON.stringify(req.headers)}`);
+  if (req.rawBody) {
+    console.log(`Got raw request: ${req.rawBody}`);
+  }
+  expressApp(req, res);
+};
