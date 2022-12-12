@@ -23,24 +23,26 @@ const member = {
   U04FCUV0DCY: "text계정",
 };
 
-receiver.router.get("/", (_req, res) => {
+receiver.router.get("/slack/events", (_req, res) => {
+  console.log("req");
   res.send("You can access this page without x-slack- headers!");
 });
 
 receiver.router.post("/slack/actions", (_req, res) => {
-  app.action("button_click", async ({ body, ack, say }) => {
-    try {
-      console.log("click", body);
-      joinedAlgoMembers.push(member[body.user.id]);
-      const join = joinedAlgoMembers.join();
+  // app.action("button_click", async ({ body, ack, say }) => {
+  //   try {
+  //     console.log("click", body);
+  //     joinedAlgoMembers.push(member[body.user.id]);
+  //     const join = joinedAlgoMembers.join();
 
-      await ack();
-      await say(`<${join}> joined in today's Algo`);
-    } catch (err) {
-      console.log(err);
-    }
-  });
-  res.send("You can access this page without x-slack- headers!");
+  //     await ack();
+  //     await say(`<${join}> joined in today's Algo`);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // });
+  console.log("pst");
+  res.send({ text: "test" });
 });
 
 async function sendMorningMessage() {
