@@ -1,6 +1,31 @@
-const { App } = require("@slack/bolt");
+const { App, ExpressReceiver } = require("@slack/bolt");
 const schedule = require("node-schedule");
 const generateRandomReviewer = require("./utils/generateRandomReviewer.js");
+
+const receiver = new ExpressReceiver({
+  signingSecret: process.env.SLACK_SIGNING_SECRET,
+  receiver,
+});
+
+receiver.router.get("/", (_req, res) => {
+  res.send("You can access this page without x-slack- headers!");
+});
+
+receiver.router.post("/slack/actions", (_req, res) => {
+  app.action("button_click", async ({ body, ack, say }) => {
+    try {
+      console.log("click", body);
+      joinedAlgoMembers.push(member[body.user.id]);
+      const join = joinedAlgoMembers.join();
+
+      await ack();
+      await say(`<${join}> joined in today's Algo`);
+    } catch (err) {
+      console.log(err);
+    }
+  });
+  res.send("You can access this page without x-slack- headers!");
+});
 
 // Initializes your app with your bot token and signing secret
 const app = new App({
