@@ -17,7 +17,7 @@ const app = new App({
 const expressApp = expressReceiver.app;
 
 const { WebClient } = require("@slack/web-api");
-app.client = new WebClient(config.SLACK_API_TOKEN);
+app.client = new WebClient(process.env.SLACK_BOT_TOKEN);
 
 const joinedAlgoMembers = [];
 
