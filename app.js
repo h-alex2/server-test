@@ -2,23 +2,23 @@ const { App, ExpressReceiver } = require("@slack/bolt");
 const schedule = require("node-schedule");
 const generateRandomReviewer = require("./utils/generateRandomReviewer.js");
 
-// const expressReceiver = new ExpressReceiver({
-//   signingSecret: process.env.SLACK_SIGNING_SECRET,
-//   endpoints: "/slack/events",
-// });
+const expressReceiver = new ExpressReceiver({
+  signingSecret: process.env.SLACK_SIGNING_SECRET,
+  // endpoints: "/slack/events",
+});
 
 // Initializes your app with your bot token and signing secret
 const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
   signingSecret: process.env.SLACK_SIGNING_SECRET,
   port: process.env.PORT || 3000,
-  // receiver: expressReceiver,
+  receiver: expressReceiver,
 });
 
-// const expressApp = expressReceiver.app;
+const expressApp = expressReceiver.app;
 
-// const { WebClient } = require("@slack/web-api");
-// app.client = new WebClient(process.env.SLACK_APP_TOKEN);
+const { WebClient } = require("@slack/web-api");
+app.client = new WebClient(process.env.SLACK_APP_TOKEN);
 
 // expressReceiver.router.post("/", (req, res) => {
 //   const payload = JSON.parse(req.body.payload);
@@ -206,16 +206,16 @@ app.error((error) => {
 
 (async () => {
   // Start your app
-  await app.start();
-  // expressApp.listen(process.env.PORT || 3000);
+  // await app.start();
+  expressApp.listen(process.env.PORT || 3000);
 
   console.log("⚡️ Bolt app is running!");
 })();
 
-// module.exports.app = function (req, res) {
-//   console.log(`Got a request: ${JSON.stringify(req.headers)}`);
-//   if (req.rawBody) {
-//     console.log(`Got raw request: ${req.rawBody}`);
-//   }
-//   expressApp(req, res);
-// };
+module.exports.app = function (req, res) {
+  console.log(`Got a request: ${JSON.stringify(req.headers)}`);
+  if (req.rawBody) {
+    console.log(`Got raw request: ${req.rawBody}`);
+  }
+  expressApp(req, res);
+};
