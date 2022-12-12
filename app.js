@@ -1,4 +1,6 @@
 const { App } = require("@slack/bolt");
+const schedule = require("node-schedule");
+const generateRandomReviewer = require("./utils/generateRandomReviewer.js");
 
 // Initializes your app with your bot token and signing secret
 const app = new App({
@@ -6,6 +8,14 @@ const app = new App({
   signingSecret: process.env.SLACK_SIGNING_SECRET,
   port: process.env.PORT || 3000,
 });
+
+const joinedAlgoMembers = [];
+
+const member = {
+  U04F2A0HT0Q: "공재혁",
+  U04EG0SPEBV: "임현정",
+  U04F5QP3WE4: "길지문",
+};
 
 async function sendMorningMessage() {
   try {
