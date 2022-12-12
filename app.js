@@ -209,7 +209,7 @@ app.message("스케줄 테스트", async ({ message, say }) => {
 (async () => {
   // Start your app
   // await app.start();
-  expressApp.listen(config.SLACK_APP_PORT || 3000);
+  expressApp.listen(process.env.PORT || 3000);
 
   console.log("⚡️ Bolt app is running!");
 })();
