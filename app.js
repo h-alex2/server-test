@@ -28,7 +28,7 @@ async function sendMorningMessage() {
           type: "section",
           text: {
             type: "mrkdwn",
-            text: `Good Morning Vas Members!🌼\n Are you ready to become a Algo King?🔥 \n Click the Join Button!`,
+            text: `Good Morning Vas Members!🌼\n Are you ready to become a Algo King?🔥`,
           },
         },
         {
@@ -73,6 +73,14 @@ async function sendReviewer() {
     console.error(error);
   }
 }
+
+app.action("button_click", async ({ body, ack, say }) => {
+  joinedAlgoMembers.push(member[body.user.id]);
+  const join = joinedAlgoMembers.join();
+
+  await ack();
+  await say(`<${join}> joined in today's Algo`);
+});
 
 let morningSheduleObj = null;
 let reviewerSheduleObj = null;
@@ -148,14 +156,14 @@ app.message("스케줄 테스트", async ({ message, say }) => {
     { ...testMessageRule, minute: testMessageRule.minute + 1 },
     () => {
       console.log("테스트 메시지2 실행");
-      sendMorningMessage();
+      sendReviewer();
     }
   );
 
   await say(
     `스케줄 테스트 실행 ${today.getHours() + 9}시 ${
       today.getMinutes() + 1
-    }에 실행됩니다.`
+    }분에 실행됩니다.`
   );
 });
 
