@@ -2,16 +2,16 @@ const { App, ExpressReceiver } = require("@slack/bolt");
 const schedule = require("node-schedule");
 const generateRandomReviewer = require("./utils/generateRandomReviewer.js");
 
-const expressReceiver = new ExpressReceiver({
-  signingSecret: process.env.SLACK_SIGNING_SECRET,
-});
+// const expressReceiver = new ExpressReceiver({
+//   signingSecret: process.env.SLACK_SIGNING_SECRET,
+// });
 
 // Initializes your app with your bot token and signing secret
 const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
   signingSecret: process.env.SLACK_SIGNING_SECRET,
   port: process.env.PORT || 3000,
-  receiver: expressReceiver,
+  // receiver: expressReceiver,
 });
 
 // const expressApp = expressReceiver.app;
@@ -19,20 +19,20 @@ const app = new App({
 // const { WebClient } = require("@slack/web-api");
 // app.client = new WebClient(process.env.SLACK_BOT_TOKEN);
 
-expressReceiver.router.post("/", (req, res) => {
-  const payload = JSON.parse(req.body.payload);
-  res.send(req.data);
-});
+// expressReceiver.router.post("/", (req, res) => {
+//   const payload = JSON.parse(req.body.payload);
+//   res.send(req.data);
+// });
 
-expressReceiver.router.post("/slack/events", (req, res) => {
-  res.send("yeah");
-});
+// expressReceiver.router.post("/slack/events", (req, res) => {
+//   res.send("yeah");
+// });
 
-expressReceiver.router.post("/slack/actions", async (req, res) => {
-  console.log(req.body);
+// expressReceiver.router.post("/slack/actions", async (req, res) => {
+//   console.log(req.body);
 
-  res.send(req.data);
-});
+//   res.send(req.data);
+// });
 
 const joinedAlgoMembers = [];
 
