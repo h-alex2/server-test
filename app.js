@@ -47,6 +47,7 @@ async function sendMorningMessage() {
               type: "plain_text",
               text: "Join",
             },
+            value: "click_me_123",
             action_id: "button_click",
           },
         },
@@ -75,11 +76,16 @@ async function sendReviewer() {
 }
 
 app.action("button_click", async ({ body, ack, say }) => {
-  joinedAlgoMembers.push(member[body.user.id]);
-  const join = joinedAlgoMembers.join();
+  try {
+    console.log("click", body);
+    joinedAlgoMembers.push(member[body.user.id]);
+    const join = joinedAlgoMembers.join();
 
-  await ack();
-  await say(`<${join}> joined in today's Algo`);
+    await ack();
+    await say(`<${join}> joined in today's Algo`);
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 let morningSheduleObj = null;
