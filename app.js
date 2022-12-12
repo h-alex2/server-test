@@ -4,7 +4,6 @@ const generateRandomReviewer = require("./utils/generateRandomReviewer.js");
 
 const expressReceiver = new ExpressReceiver({
   signingSecret: process.env.SLACK_SIGNING_SECRET,
-  endpoints: "/slack/actions",
 });
 
 // Initializes your app with your bot token and signing secret
@@ -15,10 +14,10 @@ const app = new App({
   receiver: expressReceiver,
 });
 
-const expressApp = expressReceiver.app;
+// const expressApp = expressReceiver.app;
 
-const { WebClient } = require("@slack/web-api");
-app.client = new WebClient(process.env.SLACK_BOT_TOKEN);
+// const { WebClient } = require("@slack/web-api");
+// app.client = new WebClient(process.env.SLACK_BOT_TOKEN);
 
 expressReceiver.router.post("/", (req, res) => {
   const payload = JSON.parse(req.body.payload);
@@ -26,7 +25,7 @@ expressReceiver.router.post("/", (req, res) => {
 });
 
 expressReceiver.router.post("/slack/events", (req, res) => {
-  res.send(req.data);
+  res.send("yeah");
 });
 
 expressReceiver.router.post("/slack/actions", async (req, res) => {
@@ -102,6 +101,7 @@ async function sendReviewer() {
 }
 
 app.action("button_click", async ({ body, ack, say }) => {
+  console.log("hihihihi");
   try {
     console.log("click", body);
     joinedAlgoMembers.push(member[body.user.id]);
@@ -206,16 +206,16 @@ app.error((error) => {
 
 (async () => {
   // Start your app
-  // await app.start();
-  expressApp.listen(process.env.PORT || 3000);
+  await app.start();
+  // expressApp.listen(process.env.PORT || 3000);
 
   console.log("⚡️ Bolt app is running!");
 })();
 
-module.exports.app = function (req, res) {
-  console.log(`Got a request: ${JSON.stringify(req.headers)}`);
-  if (req.rawBody) {
-    console.log(`Got raw request: ${req.rawBody}`);
-  }
-  expressApp(req, res);
-};
+// module.exports.app = function (req, res) {
+//   console.log(`Got a request: ${JSON.stringify(req.headers)}`);
+//   if (req.rawBody) {
+//     console.log(`Got raw request: ${req.rawBody}`);
+//   }
+//   expressApp(req, res);
+// };
