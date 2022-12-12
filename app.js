@@ -17,7 +17,7 @@ const app = new App({
 const expressApp = expressReceiver.app;
 
 const { WebClient } = require("@slack/web-api");
-app.client = new WebClient(process.env.SLACK_BOT_TOKEN);
+app.client = new WebClient(process.env.SLACK_APP_TOKEN);
 
 const joinedAlgoMembers = [];
 
@@ -25,7 +25,7 @@ const member = {
   U04F2A0HT0Q: "공재혁",
   U04EG0SPEBV: "임현정",
   U04F5QP3WE4: "길지문",
-  U04FCUV0DCY: "text계정",
+  U04FCUV0DCY: "test계정",
 };
 
 // receiver.router.get("/slack/events", (_req, res) => {
@@ -204,6 +204,10 @@ app.message("스케줄 테스트", async ({ message, say }) => {
   //     today.getMinutes() + 1
   //   }분에 실행됩니다.`
   // );
+});
+
+app.error((error) => {
+  console.error(error);
 });
 
 (async () => {
