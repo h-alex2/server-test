@@ -15,6 +15,7 @@ const member = {
   U04F2A0HT0Q: "공재혁",
   U04EG0SPEBV: "임현정",
   U04F5QP3WE4: "길지문",
+  U04FCUV0DCY: "text계정",
 };
 
 async function sendMorningMessage() {
@@ -77,7 +78,7 @@ app.action("button_click", async ({ body, ack, say }) => {
   joinedAlgoMembers.push(member[body.user.id]);
   const join = joinedAlgoMembers.join();
 
-  await act();
+  await ack();
   await say(`<${join}> joined in today's Algo`);
 });
 
