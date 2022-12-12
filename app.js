@@ -4,8 +4,24 @@ const generateRandomReviewer = require("./utils/generateRandomReviewer.js");
 
 const receiver = new ExpressReceiver({
   signingSecret: process.env.SLACK_SIGNING_SECRET,
+});
+
+// Initializes your app with your bot token and signing secret
+const app = new App({
+  token: process.env.SLACK_BOT_TOKEN,
+  signingSecret: process.env.SLACK_SIGNING_SECRET,
+  port: process.env.PORT || 3000,
   receiver,
 });
+
+const joinedAlgoMembers = [];
+
+const member = {
+  U04F2A0HT0Q: "공재혁",
+  U04EG0SPEBV: "임현정",
+  U04F5QP3WE4: "길지문",
+  U04FCUV0DCY: "text계정",
+};
 
 receiver.router.get("/", (_req, res) => {
   res.send("You can access this page without x-slack- headers!");
@@ -26,22 +42,6 @@ receiver.router.post("/slack/actions", (_req, res) => {
   });
   res.send("You can access this page without x-slack- headers!");
 });
-
-// Initializes your app with your bot token and signing secret
-const app = new App({
-  token: process.env.SLACK_BOT_TOKEN,
-  signingSecret: process.env.SLACK_SIGNING_SECRET,
-  port: process.env.PORT || 3000,
-});
-
-const joinedAlgoMembers = [];
-
-const member = {
-  U04F2A0HT0Q: "공재혁",
-  U04EG0SPEBV: "임현정",
-  U04F5QP3WE4: "길지문",
-  U04FCUV0DCY: "text계정",
-};
 
 async function sendMorningMessage() {
   try {
