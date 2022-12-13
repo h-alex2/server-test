@@ -1,7 +1,7 @@
 const { App } = require("@slack/bolt");
 const schedule = require("node-schedule");
 const generateRandomReviewer = require("./utils/generateRandomReviewer.js");
-const pushWithoutDuplication = require("./utils/pushWithoutDuplication.js");
+const removeDuplication = require("./utils/removeDuplication.js");
 
 const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
@@ -151,12 +151,12 @@ setSchedueler();
 
 app.action("button_click", async ({ body, ack, say }) => {
   try {
-    const prev = joinedAlgoMembers.join();
+    const prev = removeDuplication(joinedAlgoMembers).join();
     joinedAlgoMembers.push(member[body.user.id]);
-    const join = joinedAlgoMembers.join();
+    const addMember = removeDuplication(joinedAlgoMembers).join();
 
     await ack();
-    if (prev !== join) {
+    if (prev !== addMember) {
       await say(`<${join}> joined in today's Algo`);
     }
   } catch (err) {
@@ -176,6 +176,7 @@ app.message("문제 업로드 완료", async ({ message, say }) => {
 
 app.message("내가 누규?", async ({ message, say }) => {
   try {
+    console.log(message)
     await say(`나는 ${member[message.user.id]}😎`);
   } catch (error) {
     console.log("내가 누구? 에러", error);

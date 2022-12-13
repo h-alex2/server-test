@@ -1,6 +1,4 @@
-function pushWithoutDuplication(arr, pushItem) {
-  arr.push(pushItem);
-
+function removeDuplication(arr) {
   const deduplication = new Set(arr);
 
   return [...deduplication];
