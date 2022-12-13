@@ -151,11 +151,14 @@ setSchedueler();
 
 app.action("button_click", async ({ body, ack, say }) => {
   try {
+    const prev = joinedAlgoMembers.join();
     joinedAlgoMembers.push(member[body.user.id]);
     const join = joinedAlgoMembers.join();
 
     await ack();
-    await say(`<${join}> joined in today's Algo`);
+    if (prev !== join) {
+      await say(`<${join}> joined in today's Algo`);
+    }
   } catch (err) {
     console.log(err);
   }
@@ -164,17 +167,16 @@ app.action("button_click", async ({ body, ack, say }) => {
 app.message("문제 업로드 완료", async ({ message, say }) => {
   try {
     await say(
-      `Today's algo upload complete.✨ \n\n Please follow the process below. \n 1. git fetch algo main \n2. git merge algo/main`
+      `Today's algo upload complete.✨ \n\n Please follow the process below. \n⚠️git fetch algo *problems*`
     );
   } catch (error) {
     console.log("문제 업로드 완료 에러", error);
   }
 });
 
-app.message("내가 누구?", async ({ body, message, say }) => {
+app.message("내가 누규?", async ({ message, say }) => {
   try {
-    console.log(message);
-    await say(`나는 ${member[body.user.id]}😎`);
+    await say(`나는 ${member[message.user.id]}😎`);
   } catch (error) {
     console.log("내가 누구? 에러", error);
   }
