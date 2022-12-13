@@ -93,12 +93,12 @@ const scheduleSet = () => {
 
   morningMessageRule.dayOfWeek = [0, 2, 4, 6];
   morningMessageRule.hour = 17;
-  morningMessageRule.minute = 40;
+  morningMessageRule.minute = 46;
   morningMessageRule.tz = "Asia/Seoul";
 
   reviewerMatchRule.dayOfWeek = [0, 2, 4, 6];
   reviewerMatchRule.hour = 17;
-  reviewerMatchRule.minute = 41;
+  reviewerMatchRule.minute = 48;
   reviewerMatchRule.tz = "Asia/Seoul";
 
   const firstJob = schedule.scheduleJob(morningMessageRule, () => {
@@ -136,6 +136,7 @@ app.action("button_click", async ({ body, ack, say }) => {
     if (
       joinedAlgoMembers.find((joinedMember) => joinedMember === clickedMember)
     ) {
+      await ack();
       return;
     } else {
       joinedAlgoMembers.push(clickedMember);
