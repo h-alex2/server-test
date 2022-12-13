@@ -188,38 +188,18 @@ app.message("스케줄 테스트", async ({ message, say }) => {
   await sendMorningMessage();
 });
 
-app.event("app_home_opened", async ({ event, client, logger }) => {
-  try {
-    // Call views.publish with the built-in client
-    const result = await client.views.publish({
-      // Use the user ID associated with the event
-      user_id: event.user,
-      view: {
-        // Home tabs must be enabled in your app configuration page under "App Home"
-        type: "home",
-        blocks: [
-          {
-            type: "section",
-            text: {
-              type: "mrkdwn",
-              text: "*Welcome home, <@" + event.user + "> :house:*",
-            },
-          },
-          {
-            type: "section",
-            text: {
-              type: "mrkdwn",
-              text: "",
-            },
-          },
-        ],
-      },
-    });
-
-    logger.info(result);
-  } catch (error) {
-    logger.error(error);
-  }
+app.event("app_home_opened", async ({ event, client, logger, ack }) => {
+  await ack();
+  await say(`
+  🔹picker bot은 매주 일, 화, 목, 토\n
+  9시 30분, 10시 30분에 메세지를 보냅니다.\n
+  🔹picker bot의 명령어 \n
+  1. 초기 설정 방법\n
+  2. 문제 업데이트 방법\n
+  3. 문제 업로드 완료\n
+  를 입력하면 어디든지 나타납니다.\n
+  (다이렉트 메시지 제외, picker bot을 각 채널에 초대하여야 합니다.)
+  `);
 });
 
 app.error((error) => {
