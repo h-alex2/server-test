@@ -1,50 +1,34 @@
-const { App, ExpressReceiver } = require("@slack/bolt");
+const { App } = require("@slack/bolt");
 const schedule = require("node-schedule");
 const generateRandomReviewer = require("./utils/generateRandomReviewer.js");
+const pushWithoutDuplication = require("./utils/pushWithoutDuplication.js");
 
-// const expressReceiver = new ExpressReceiver({
-//   signingSecret: process.env.SLACK_SIGNING_SECRET,
-// });
-
-// Initializes your app with your bot token and signing secret
 const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
   signingSecret: process.env.SLACK_SIGNING_SECRET,
   port: process.env.PORT || 3000,
-  // receiver: expressReceiver,
 });
-
-// const expressApp = expressReceiver.app;
-
-// const { WebClient } = require("@slack/web-api");
-// app.client = new WebClient(process.env.SLACK_BOT_TOKEN);
-
-// expressReceiver.router.post("/", (req, res) => {
-//   const payload = JSON.parse(req.body.payload);
-//   res.send(req.data);
-// });
-
-// expressReceiver.router.post("/slack/events", (req, res) => {
-//   res.send("yeah");
-// });
-
-// expressReceiver.router.post("/slack/actions", async (req, res) => {
-//   console.log(req.body);
-
-//   res.send(req.data);
-// });
 
 const joinedAlgoMembers = [];
 
 const member = {
   U04F2A0HT0Q: "공재혁",
-  U04EG0SPEBV: "임현정",
   U04F5QP3WE4: "길지문",
-  U04FCUV0DCY: "test계정",
+  U04EQSZ4MSS: "사공은혜",
+  U04EXF5FSTC: "안형우",
+  U04EGULQY5V: "이세영",
+  U04EQSZ6GHL: "이정진",
+  U04EG0SPEBV: "임현정",
+  U04EGUM5ZFH: "최송이",
+  U04FM6DECP2: "한아름",
+  U04ERNNE11S: "test1",
+  U04FCUV0DCY: "test2",
 };
 
 async function sendMorningMessage() {
   try {
+    joinedAlgoMembers.length = 0;
+
     const result = await app.client.chat.postMessage({
       token: process.env.SLACK_BOT_TOKEN,
       channel: process.env.MESSAGE_CHANNEL,
@@ -54,7 +38,7 @@ async function sendMorningMessage() {
           type: "section",
           text: {
             type: "mrkdwn",
-            text: `Good Morning Vas Members!🌼\n Are you ready to become a Algo King?🔥`,
+            text: `Good Morning Vas Members!🌼\n Are you ready to become a Algo King?`,
           },
         },
         {
@@ -64,7 +48,7 @@ async function sendMorningMessage() {
           type: "section",
           text: {
             type: "mrkdwn",
-            text: "Click the *Join* Button!",
+            text: "Click the *Join* Button!🔥",
           },
           accessory: {
             type: "button",
@@ -101,14 +85,20 @@ async function sendReviewer() {
 }
 
 app.action("button_click", async ({ body, ack, say }) => {
-  console.log("hihihihi");
   try {
-    console.log("click", body);
-    joinedAlgoMembers.push(member[body.user.id]);
+    // joinedAlgoMembers.push(member[body.user.id]);
+    // const deduplication = new Set(joinedAlgoMembers);
+    // const join = [...deduplication].join();
+    const prevJoinedMember = joinedAlgoMembers.join();
+
+    pushWithoutDuplication(joinedAlgoMembers, member[body.user.id]);
+
     const join = joinedAlgoMembers.join();
 
     await ack();
-    await say(`<${join}> joined in today's Algo`);
+    if (prevJoinedMember !== join) {
+      await say(`<${join}> joined in today's Algo`);
+    }
   } catch (err) {
     console.log(err);
   }
@@ -121,14 +111,14 @@ const scheduleSet = () => {
   const morningMessageRule = new schedule.RecurrenceRule();
   const reviewerMatchRule = new schedule.RecurrenceRule();
 
-  morningMessageRule.dayOfWeek = [0, 1, 2, 4, 6];
-  morningMessageRule.hour = 16;
-  morningMessageRule.minute = 30;
+  morningMessageRule.dayOfWeek = [0, 2, 4, 6];
+  morningMessageRule.hour = 14;
+  morningMessageRule.minute = 12;
   morningMessageRule.tz = "Asia/Seoul";
 
-  reviewerMatchRule.dayOfWeek = [0, 1, 2, 4, 6];
-  reviewerMatchRule.hour = 16;
-  reviewerMatchRule.minute = 31;
+  reviewerMatchRule.dayOfWeek = [0, 2, 4, 6];
+  reviewerMatchRule.hour = 14;
+  reviewerMatchRule.minute = 15;
   reviewerMatchRule.tz = "Asia/Seoul";
 
   const firstJob = schedule.scheduleJob(morningMessageRule, () => {
@@ -159,6 +149,18 @@ const setSchedueler = () => {
 
 setSchedueler();
 
+app.action("button_click", async ({ body, ack, say }) => {
+  try {
+    joinedAlgoMembers.push(member[body.user.id]);
+    const join = joinedAlgoMembers.join();
+
+    await ack();
+    await say(`<${join}> joined in today's Algo`);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 app.message("문제 업로드 완료", async ({ message, say }) => {
   try {
     await say(
@@ -169,35 +171,17 @@ app.message("문제 업로드 완료", async ({ message, say }) => {
   }
 });
 
+app.message("내가 누구?", async ({ body, message, say }) => {
+  try {
+    console.log(message);
+    await say(`나는 ${member[body.user.id]}😎`);
+  } catch (error) {
+    console.log("내가 누구? 에러", error);
+  }
+});
+
 app.message("스케줄 테스트", async ({ message, say }) => {
   await sendMorningMessage();
-  // const today = new Date();
-
-  // const testMessageRule = new schedule.RecurrenceRule();
-
-  // testMessageRule.dayOfWeek = [0, 1, 2, 4, 6];
-  // testMessageRule.hour = today.getHours() + 9;
-  // testMessageRule.minute = today.getMinutes() + 1;
-  // testMessageRule.tz = "Asia/Seoul";
-
-  // schedule.scheduleJob(testMessageRule, () => {
-  //   console.log("테스트 메시지 실행");
-  //   sendMorningMessage();
-  // });
-
-  // schedule.scheduleJob(
-  //   { ...testMessageRule, minute: testMessageRule.minute + 1 },
-  //   () => {
-  //     console.log("테스트 메시지2 실행");
-  //     sendReviewer();
-  //   }
-  // );
-
-  // await say(
-  //   `스케줄 테스트 실행 ${today.getHours() + 9}시 ${
-  //     today.getMinutes() + 1
-  //   }분에 실행됩니다.`
-  // );
 });
 
 app.error((error) => {
@@ -205,17 +189,7 @@ app.error((error) => {
 });
 
 (async () => {
-  // Start your app
   await app.start();
-  // expressApp.listen(process.env.PORT || 3000);
 
   console.log("⚡️ Bolt app is running!");
 })();
-
-// module.exports.app = function (req, res) {
-//   console.log(`Got a request: ${JSON.stringify(req.headers)}`);
-//   if (req.rawBody) {
-//     console.log(`Got raw request: ${req.rawBody}`);
-//   }
-//   expressApp(req, res);
-// };
