@@ -93,12 +93,12 @@ const scheduleSet = () => {
 
   morningMessageRule.dayOfWeek = [0, 2, 4, 6];
   morningMessageRule.hour = 17;
-  morningMessageRule.minute = 30;
+  morningMessageRule.minute = 40;
   morningMessageRule.tz = "Asia/Seoul";
 
   reviewerMatchRule.dayOfWeek = [0, 2, 4, 6];
   reviewerMatchRule.hour = 17;
-  reviewerMatchRule.minute = 32;
+  reviewerMatchRule.minute = 41;
   reviewerMatchRule.tz = "Asia/Seoul";
 
   const firstJob = schedule.scheduleJob(morningMessageRule, () => {
