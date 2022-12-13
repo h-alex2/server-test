@@ -96,12 +96,12 @@ const scheduleSet = () => {
 
   morningMessageRule.dayOfWeek = [0, 2, 4, 6];
   morningMessageRule.hour = 17;
-  morningMessageRule.minute = 55;
+  morningMessageRule.minute = 56;
   morningMessageRule.tz = "Asia/Seoul";
 
   reviewerMatchRule.dayOfWeek = [0, 2, 4, 6];
   reviewerMatchRule.hour = 17;
-  reviewerMatchRule.minute = 57;
+  reviewerMatchRule.minute = 58;
   reviewerMatchRule.tz = "Asia/Seoul";
 
   const firstJob = schedule.scheduleJob(morningMessageRule, () => {
@@ -155,7 +155,9 @@ app.action("button_click", async ({ body, ack, say }) => {
 app.message("문제 업로드 완료", async ({ message, say }) => {
   try {
     await say(
-      `Today's algo upload complete.✨ \n\n Please follow the process below. \n⚠️git pull algo *problems*`
+      `Today's algo upload complete.✨
+      \n\nPlease follow the process below.
+      \n⚠️git pull algo *problems*`
     );
   } catch (error) {
     console.log("문제 업로드 완료 에러", error);
@@ -168,8 +170,17 @@ app.message("초기 설정 방법", async ({ message, say }) => {
     await say(`
     1. git clone https://github.com/vaco-algo/vaco-algo-study.git
     2. git remote add algo https://github.com/vaco-algo/vaco-algo-study.git 으로 본 레포를 remote에 추가한다.
-    3. 문제 내려받기 : git pull algo *problems*
+    3. 문제 내려받기 : ⭐️git pull algo *problems*⭐️
     `);
+  } catch (error) {
+    console.log("내가 누구? 에러", error);
+  }
+});
+
+app.message("문제 내려받는 방법", async ({ message, say }) => {
+  try {
+    console.log(message);
+    await say(`⭐️git pull algo *problems*⭐️`);
   } catch (error) {
     console.log("내가 누구? 에러", error);
   }
