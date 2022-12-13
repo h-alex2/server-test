@@ -72,6 +72,9 @@ async function sendMorningMessage() {
 async function sendReviewer() {
   try {
     const reviewer = generateRandomReviewer(joinedAlgoMembers);
+
+    if (!reviewer) return;
+
     const result = await app.client.chat.postMessage({
       token: process.env.SLACK_BOT_TOKEN,
       channel: process.env.MESSAGE_CHANNEL,
@@ -93,12 +96,12 @@ const scheduleSet = () => {
 
   morningMessageRule.dayOfWeek = [0, 2, 4, 6];
   morningMessageRule.hour = 17;
-  morningMessageRule.minute = 46;
+  morningMessageRule.minute = 55;
   morningMessageRule.tz = "Asia/Seoul";
 
   reviewerMatchRule.dayOfWeek = [0, 2, 4, 6];
   reviewerMatchRule.hour = 17;
-  reviewerMatchRule.minute = 48;
+  reviewerMatchRule.minute = 57;
   reviewerMatchRule.tz = "Asia/Seoul";
 
   const firstJob = schedule.scheduleJob(morningMessageRule, () => {
@@ -159,10 +162,14 @@ app.message("문제 업로드 완료", async ({ message, say }) => {
   }
 });
 
-app.message("내가 누규?", async ({ message, say }) => {
+app.message("초기 설정 방법", async ({ message, say }) => {
   try {
     console.log(message);
-    await say(`나는 ${member[message.user.id]}😎`);
+    await say(`
+    1. git clone https://github.com/vaco-algo/vaco-algo-study.git
+    2. git remote add algo https://github.com/vaco-algo/vaco-algo-study.git 으로 본 레포를 remote에 추가한다.
+    3. 문제 내려받기 : git pull algo *problems*
+    `);
   } catch (error) {
     console.log("내가 누구? 에러", error);
   }
