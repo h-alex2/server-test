@@ -70,6 +70,7 @@ async function sendMorningMessage() {
 
 async function sendReviewer() {
   try {
+    console.log(joinedAlgoMembers, "what");
     const reviewer = generateRandomReviewer(joinedAlgoMembers);
 
     if (!reviewer) return;
@@ -174,7 +175,7 @@ app.message("초기 설정 방법", async ({ message, say }) => {
   }
 });
 
-app.message("문제 내려받는 방법", async ({ message, say }) => {
+app.message("문제 업데이트 방법", async ({ message, say }) => {
   try {
     console.log(message);
     await say("⭐️`$ git pull algo problems`⭐️");
@@ -185,6 +186,40 @@ app.message("문제 내려받는 방법", async ({ message, say }) => {
 
 app.message("스케줄 테스트", async ({ message, say }) => {
   await sendMorningMessage();
+});
+
+app.event("app_home_opened", async ({ event, client, logger }) => {
+  try {
+    // Call views.publish with the built-in client
+    const result = await client.views.publish({
+      // Use the user ID associated with the event
+      user_id: event.user,
+      view: {
+        // Home tabs must be enabled in your app configuration page under "App Home"
+        type: "home",
+        blocks: [
+          {
+            type: "section",
+            text: {
+              type: "mrkdwn",
+              text: "*Welcome home, <@" + event.user + "> :house:*",
+            },
+          },
+          {
+            type: "section",
+            text: {
+              type: "mrkdwn",
+              text: "",
+            },
+          },
+        ],
+      },
+    });
+
+    logger.info(result);
+  } catch (error) {
+    logger.error(error);
+  }
 });
 
 app.error((error) => {
