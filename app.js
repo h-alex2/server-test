@@ -188,7 +188,7 @@ app.message("스케줄 테스트", async ({ message, say }) => {
   await sendMorningMessage();
 });
 
-app.message("hey", async ({ event, client, logger, ack }) => {
+app.message("hey", async ({ say }) => {
   await say(`
   🔹picker bot은 매주 일, 화, 목, 토\n
   9시 30분, 10시 30분에 메세지를 보냅니다.\n
