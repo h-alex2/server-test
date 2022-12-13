@@ -4,4 +4,4 @@ function removeDuplication(arr) {
   return [...deduplication];
 }
 
-module.exports = pushWithoutDuplication;
+module.exports = removeDuplication;

@@ -131,14 +131,17 @@ setSchedueler();
 
 app.action("button_click", async ({ body, ack, say }) => {
   try {
-    const prev = joinedAlgoMembers.join();
-    joinedAlgoMembers.push(member[body.user.id]);
-    const join = joinedAlgoMembers.join();
+    const clickedMember = member[body.user.id];
 
-    await ack();
+    if (
+      joinedAlgoMembers.find((joinedMember) => joinedMember === clickedMember)
+    ) {
+      return;
+    } else {
+      joinedAlgoMembers.push(clickedMember);
 
-    if (prev !== join) {
-      await say(`<${join}> joined in today's Algo`);
+      await ack();
+      await say(`<${joinedAlgoMembers.join()}> joined in today's Algo`);
     }
   } catch (err) {
     console.log(err);
