@@ -84,26 +84,6 @@ async function sendReviewer() {
   }
 }
 
-app.action("button_click", async ({ body, ack, say }) => {
-  try {
-    // joinedAlgoMembers.push(member[body.user.id]);
-    // const deduplication = new Set(joinedAlgoMembers);
-    // const join = [...deduplication].join();
-    const prevJoinedMember = joinedAlgoMembers.join();
-
-    pushWithoutDuplication(joinedAlgoMembers, member[body.user.id]);
-
-    const join = joinedAlgoMembers.join();
-
-    await ack();
-    if (prevJoinedMember !== join) {
-      await say(`<${join}> joined in today's Algo`);
-    }
-  } catch (err) {
-    console.log(err);
-  }
-});
-
 let morningSheduleObj = null;
 let reviewerSheduleObj = null;
 
@@ -112,13 +92,13 @@ const scheduleSet = () => {
   const reviewerMatchRule = new schedule.RecurrenceRule();
 
   morningMessageRule.dayOfWeek = [0, 2, 4, 6];
-  morningMessageRule.hour = 14;
-  morningMessageRule.minute = 12;
+  morningMessageRule.hour = 17;
+  morningMessageRule.minute = 30;
   morningMessageRule.tz = "Asia/Seoul";
 
   reviewerMatchRule.dayOfWeek = [0, 2, 4, 6];
-  reviewerMatchRule.hour = 14;
-  reviewerMatchRule.minute = 15;
+  reviewerMatchRule.hour = 17;
+  reviewerMatchRule.minute = 32;
   reviewerMatchRule.tz = "Asia/Seoul";
 
   const firstJob = schedule.scheduleJob(morningMessageRule, () => {
@@ -151,12 +131,13 @@ setSchedueler();
 
 app.action("button_click", async ({ body, ack, say }) => {
   try {
-    const prev = removeDuplication(joinedAlgoMembers).join();
+    const prev = joinedAlgoMembers.join();
     joinedAlgoMembers.push(member[body.user.id]);
-    const addMember = removeDuplication(joinedAlgoMembers).join();
+    const join = joinedAlgoMembers.join();
 
     await ack();
-    if (prev !== addMember) {
+
+    if (prev !== join) {
       await say(`<${join}> joined in today's Algo`);
     }
   } catch (err) {
@@ -176,7 +157,7 @@ app.message("문제 업로드 완료", async ({ message, say }) => {
 
 app.message("내가 누규?", async ({ message, say }) => {
   try {
-    console.log(message)
+    console.log(message);
     await say(`나는 ${member[message.user.id]}😎`);
   } catch (error) {
     console.log("내가 누구? 에러", error);
