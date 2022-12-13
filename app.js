@@ -1,7 +1,6 @@
 const { App } = require("@slack/bolt");
 const schedule = require("node-schedule");
 const generateRandomReviewer = require("./utils/generateRandomReviewer.js");
-const removeDuplication = require("./utils/removeDuplication.js");
 
 const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
@@ -96,12 +95,12 @@ const scheduleSet = () => {
 
   morningMessageRule.dayOfWeek = [0, 2, 4, 6];
   morningMessageRule.hour = 19;
-  morningMessageRule.minute = 00;
+  morningMessageRule.minute = 45;
   morningMessageRule.tz = "Asia/Seoul";
 
   reviewerMatchRule.dayOfWeek = [0, 2, 4, 6];
   reviewerMatchRule.hour = 19;
-  reviewerMatchRule.minute = 30;
+  reviewerMatchRule.minute = 47;
   reviewerMatchRule.tz = "Asia/Seoul";
 
   const firstJob = schedule.scheduleJob(morningMessageRule, () => {
@@ -167,22 +166,20 @@ app.message("문제 업로드 완료", async ({ message, say }) => {
 app.message("초기 설정 방법", async ({ message, say }) => {
   try {
     console.log(message);
-    await say(`
-    1. git clone https://github.com/vaco-algo/vaco-algo-study.git
-    2. git remote add algo https://github.com/vaco-algo/vaco-algo-study.git 으로 본 레포를 remote에 추가한다.
-    3. 문제 내려받기 : ⭐️git pull algo *problems*⭐️
-    `);
+    await say(
+      "1. `$ git clone https://github.com/vaco-algo/vaco-algo-study.git` \n2. `$ git remote add algo https://github.com/vaco-algo/vaco-algo-study.git` 으로 본 레포를 remote에 추가한다. \n3. 문제 내려받기 : ⭐️`$ git pull algo problems`⭐️"
+    );
   } catch (error) {
-    console.log("내가 누구? 에러", error);
+    console.log("초기 설정 방법 에러", error);
   }
 });
 
 app.message("문제 내려받는 방법", async ({ message, say }) => {
   try {
     console.log(message);
-    await say(`⭐️git pull algo *problems*⭐️`);
+    await say("⭐️`$ git pull algo problems`⭐️");
   } catch (error) {
-    console.log("내가 누구? 에러", error);
+    console.log("문제 에러", error);
   }
 });
 

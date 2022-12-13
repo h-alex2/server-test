@@ -9,7 +9,13 @@ function generateRandomReviewer(peopleArr) {
       number: Math.ceil(Math.random() * 100),
     }))
     .sort((a, b) => a.number - b.number)
-    .map((person) => person.name);
+    .map((person) => {
+      if (!person.name) {
+        return "👻";
+      }
+
+      return person.name;
+    });
 
   return order.join(" => ") + " => " + order[0];
 }
