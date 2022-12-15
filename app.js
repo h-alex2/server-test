@@ -1,4 +1,5 @@
 const { App } = require("@slack/bolt");
+const http = require("http");
 const schedule = require("node-schedule");
 const generateRandomReviewer = require("./utils/generateRandomReviewer.js");
 
@@ -8,17 +9,9 @@ const app = new App({
   port: process.env.PORT || 3000,
 });
 
-const allMembers = [
-  "공재혁",
-  "길지문",
-  "사공은혜",
-  "안형우",
-  "이세영",
-  "이정진",
-  "임현정",
-  "최송이",
-  "한아름",
-];
+setInterval(function () {
+  http.get("https://vas-slack-server.onrender.com");
+}, 600000);
 
 const joinedAlgoMembers = [];
 
