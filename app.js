@@ -201,39 +201,9 @@ app.message("스케줄 테스트", async ({ message, say }) => {
 });
 
 app.message("굿모닝", async ({ message, say }) => {
-  await app.client.chat.postMessage({
-    token: process.env.SLACK_BOT_TOKEN,
-    channel: process.env.MESSAGE_CHANNEL,
-    text: "Good Morning",
-    blocks: [
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: `Good Morning Vas Members!🌼\n Are you ready to become a Algo King?`,
-        },
-      },
-      {
-        type: "divider",
-      },
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: "Click the *Join* Button!🔥",
-        },
-        accessory: {
-          type: "button",
-          text: {
-            type: "plain_text",
-            text: "Join",
-          },
-          value: "click_me_123",
-          action_id: "button_click",
-        },
-      },
-    ],
-  });
+  await say(
+    `Good Morning Vas Members!🌼\n Are you ready to become a Algo King? \nPlease add a check emoji✔️`
+  );
 });
 
 app.message("랜덤 리뷰어", async ({ message, say }) => {
@@ -256,12 +226,6 @@ app.message("hey", async ({ message, say }) => {
   } catch (error) {
     console.log("hey", error);
   }
-});
-
-app.event("app_home_opened", async ({ event, say }) => {
-  await say(
-    "🔹picker bot은 매주 일, 화, 목, 토\n9시 30분, 10시 30분에 메세지를 보냅니다.\n🔹picker bot의 명령어 \n1. `초기 설정 방법`\n2. `문제 업데이트 방법`\n3. `문제 업로드 완료`\n를 입력하면 어디든지 나타납니다.\n(다이렉트 메시지 제외, picker bot을 각 채널에 초대하여야 합니다.)"
-  );
 });
 
 app.error((error) => {
