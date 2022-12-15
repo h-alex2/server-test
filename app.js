@@ -10,7 +10,7 @@ const app = new App({
 });
 
 setInterval(function () {
-  http.get("https://vas-slack-server.onrender.com");
+  http.get("https://server-test-31xt.onrender.com");
 }, 600000);
 
 const joinedAlgoMembers = [];
@@ -173,7 +173,7 @@ app.message("초기 설정 방법", async ({ message, say }) => {
   try {
     console.log(message);
     await say(
-      "1. `https://github.com/vaco-algo/vaco-algo-study` fork \n2. `$ git clone fork한 레포` \n3. `$ git remote add algo https://github.com/vaco-algo/vaco-algo-study.git` 으로 본 레포를 remote에 추가한다. \n4. 문제 내려받기 : ⭐️`$ git pull algo problems`⭐️"
+      "1. `https://github.com/vaco-algo/vaco-algo-study` fork \n2. `$ git clone fork한 레포` \n3. `$ git remote add algo https://github.com/vaco-algo/vaco-algo-study.git` 으로 본 레포를 remote에 추가한다. \n4. 문제 내려받기 \n⭐️1. `$ git fetch algo problems`⭐️ \n⭐️2. `$ git merge algo problems`⭐️"
     );
   } catch (error) {
     console.log("초기 설정 방법 에러", error);
@@ -183,7 +183,9 @@ app.message("초기 설정 방법", async ({ message, say }) => {
 app.message("문제 업데이트 방법", async ({ message, say }) => {
   try {
     console.log(message);
-    await say("⭐️`$ git pull algo problems`⭐️");
+    await say(
+      "⭐️1. `$ git fetch algo problems`⭐️ \n⭐️2. `$ git merge algo problems`⭐️"
+    );
   } catch (error) {
     console.log("문제 에러", error);
   }
