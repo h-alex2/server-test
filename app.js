@@ -8,6 +8,18 @@ const app = new App({
   port: process.env.PORT || 3000,
 });
 
+const allMembers = [
+  "공재혁",
+  "길지문",
+  "사공은혜",
+  "안형우",
+  "이세영",
+  "이정진",
+  "임현정",
+  "최송이",
+  "한아름",
+];
+
 const joinedAlgoMembers = [];
 
 const member = {
@@ -95,13 +107,13 @@ const scheduleSet = () => {
   const reviewerMatchRule = new schedule.RecurrenceRule();
 
   morningMessageRule.dayOfWeek = [0, 2, 4, 6];
-  morningMessageRule.hour = 20;
-  morningMessageRule.minute = 31;
+  morningMessageRule.hour = 09;
+  morningMessageRule.minute = 30;
   morningMessageRule.tz = "Asia/Seoul";
 
   reviewerMatchRule.dayOfWeek = [0, 2, 4, 6];
-  reviewerMatchRule.hour = 20;
-  reviewerMatchRule.minute = 33;
+  reviewerMatchRule.hour = 10;
+  reviewerMatchRule.minute = 30;
   reviewerMatchRule.tz = "Asia/Seoul";
 
   const firstJob = schedule.scheduleJob(morningMessageRule, () => {
@@ -168,7 +180,7 @@ app.message("초기 설정 방법", async ({ message, say }) => {
   try {
     console.log(message);
     await say(
-      "1. `$ git clone https://github.com/vaco-algo/vaco-algo-study.git` \n2. `$ git remote add algo https://github.com/vaco-algo/vaco-algo-study.git` 으로 본 레포를 remote에 추가한다. \n3. 문제 내려받기 : ⭐️`$ git pull algo problems`⭐️"
+      "1. `https://github.com/vaco-algo/vaco-algo-study` fork \n2. `$ git clone fork한 레포` \n3. `$ git remote add algo https://github.com/vaco-algo/vaco-algo-study.git` 으로 본 레포를 remote에 추가한다. \n4. 문제 내려받기 : ⭐️`$ git pull algo problems`⭐️"
     );
   } catch (error) {
     console.log("초기 설정 방법 에러", error);
@@ -188,17 +200,29 @@ app.message("스케줄 테스트", async ({ message, say }) => {
   await sendMorningMessage();
 });
 
-app.message("hey", async ({ say }) => {
-  await say(`
-  🔹picker bot은 매주 일, 화, 목, 토\n
-  9시 30분, 10시 30분에 메세지를 보냅니다.\n
-  🔹picker bot의 명령어 \n
-  1. 초기 설정 방법\n
-  2. 문제 업데이트 방법\n
-  3. 문제 업로드 완료\n
-  를 입력하면 어디든지 나타납니다.\n
-  (다이렉트 메시지 제외, picker bot을 각 채널에 초대하여야 합니다.)
-  `);
+app.message("랜덤 리뷰어", async ({ message, say }) => {
+  console.log(message)
+  const reviewer = generateRandomReviewer(allMembers);
+
+  if (!reviewer) return;
+
+  await say(`⭐️Today's Reviewer \n ${reviewer}`);
+});
+
+app.message("hey", async ({ message, say }) => {
+  try {
+    await say(
+      "🔹picker bot은 매주 일, 화, 목, 토\n9시 30분, 10시 30분에 메세지를 보냅니다.\n🔹picker bot의 명령어 \n1. `초기 설정 방법`\n2. `문제 업데이트 방법`\n3. `문제 업로드 완료`\n를 입력하면 어디든지 나타납니다.\n(다이렉트 메시지 제외, picker bot을 각 채널에 초대하여야 합니다.)"
+    );
+  } catch (error) {
+    console.log("hey", error);
+  }
+});
+
+app.event("app_home_opened", async ({ event, say }) => {
+  await say(
+    "🔹picker bot은 매주 일, 화, 목, 토\n9시 30분, 10시 30분에 메세지를 보냅니다.\n🔹picker bot의 명령어 \n1. `초기 설정 방법`\n2. `문제 업데이트 방법`\n3. `문제 업로드 완료`\n를 입력하면 어디든지 나타납니다.\n(다이렉트 메시지 제외, picker bot을 각 채널에 초대하여야 합니다.)"
+  );
 });
 
 app.error((error) => {
