@@ -99,12 +99,12 @@ const scheduleSet = () => {
   const morningMessageRule = new schedule.RecurrenceRule();
   const reviewerMatchRule = new schedule.RecurrenceRule();
 
-  morningMessageRule.dayOfWeek = [0, 2, 4, 6];
+  morningMessageRule.dayOfWeek = [0, 1, 2, 3, 4, 5, 6];
   morningMessageRule.hour = 09;
   morningMessageRule.minute = 30;
   morningMessageRule.tz = "Asia/Seoul";
 
-  reviewerMatchRule.dayOfWeek = [0, 2, 4, 6];
+  reviewerMatchRule.dayOfWeek = [0, 1, 2, 3, 4, 5, 6];
   reviewerMatchRule.hour = 10;
   reviewerMatchRule.minute = 30;
   reviewerMatchRule.tz = "Asia/Seoul";
