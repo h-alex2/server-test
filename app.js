@@ -15,7 +15,7 @@ const app = new App({
 });
 
 expressReceiver.router.get("/", (req, res) => {
-  res.send({ date: "hello" });
+  res.json({ data: "hello" });
 });
 
 const id = setInterval(async () => {
@@ -171,6 +171,14 @@ app.action("button_click", async ({ body, ack, say }) => {
   }
 });
 
+app.message("픽봇 일어나", async ({ message, say }) => {
+  try {
+    await say("Good morning~");
+  } catch (error) {
+    console.log("문제 업로드 완료 에러", error);
+  }
+});
+
 app.message("문제 업로드 완료", async ({ message, say }) => {
   try {
     await say(
@@ -224,7 +232,7 @@ app.message("랜덤 리뷰어", async ({ message, say }) => {
 app.message("hey", async ({ message, say }) => {
   try {
     await say(
-      "🔹picker bot은 매주 일, 화, 목, 토\n9시 30분, 10시 30분에 메세지를 보냅니다.\n🔹picker bot의 명령어 \n1. `초기 설정 방법`\n2. `문제 업데이트 방법`\n3. `문제 업로드 완료`\n를 입력하면 어디든지 나타납니다.\n(다이렉트 메시지 제외, picker bot을 각 채널에 초대하여야 합니다.)"
+      "🔹picker bot은 매주 일, 화, 목, 토\n9시 30분, 10시 30분에 메세지를 보냅니다.\n🔹picker bot의 명령어 \n1. `초기 설정 방법`\n2. `문제 업데이트 방법`\n3. `문제 업로드 완료 \n4. 픽봇 일어나(잠든 픽봇 깨우기) \n5.굿모닝(알고리즘 푸는 사람 모으기) \n6. 랜덤 리뷰어`\n를 입력하면 어디든지 나타납니다.\n(다이렉트 메시지 제외, picker bot을 각 채널에 초대하여야 합니다.)"
     );
   } catch (error) {
     console.log("hey", error);
