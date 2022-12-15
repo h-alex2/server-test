@@ -2,6 +2,7 @@ const { App } = require("@slack/bolt");
 const http = require("http");
 const schedule = require("node-schedule");
 const generateRandomReviewer = require("./utils/generateRandomReviewer.js");
+const axios = require("axios");
 
 const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
@@ -9,9 +10,14 @@ const app = new App({
   port: process.env.PORT || 3000,
 });
 
-setInterval(function () {
-  http.get("https://server-test-31xt.onrender.com");
+const id = setInterval(async () => {
+  if (removeId) clearInterval(removeId);
+  await axios.get("https://server-test-31xt.onrender.com");
 }, 600000);
+
+const removeId = setInterval(() => {
+  clearInterval(id);
+}, 650000);
 
 const joinedAlgoMembers = [];
 
@@ -42,7 +48,7 @@ async function sendMorningMessage() {
           type: "section",
           text: {
             type: "mrkdwn",
-            text: `Good Morning Vas Members!🌼\n Are you ready to become a Algo King?`,
+            text: `Good Morning Vas Members!🌼\n Are you ready to become a Algo King? \n(Join 클릭 후 메시지 안뜨면 체크 이모지 추가해주세요!)`,
           },
         },
         {
@@ -99,12 +105,12 @@ const scheduleSet = () => {
   const morningMessageRule = new schedule.RecurrenceRule();
   const reviewerMatchRule = new schedule.RecurrenceRule();
 
-  morningMessageRule.dayOfWeek = [0, 1, 2, 3, 4, 5, 6];
+  morningMessageRule.dayOfWeek = [0, 2, 4, 6];
   morningMessageRule.hour = 09;
   morningMessageRule.minute = 30;
   morningMessageRule.tz = "Asia/Seoul";
 
-  reviewerMatchRule.dayOfWeek = [0, 1, 2, 3, 4, 5, 6];
+  reviewerMatchRule.dayOfWeek = [0, 2, 4, 6];
   reviewerMatchRule.hour = 10;
   reviewerMatchRule.minute = 30;
   reviewerMatchRule.tz = "Asia/Seoul";
@@ -191,14 +197,8 @@ app.message("문제 업데이트 방법", async ({ message, say }) => {
   }
 });
 
-app.message("스케줄 테스트", async ({ message, say }) => {
-  await sendMorningMessage();
-});
-
 app.message("굿모닝", async ({ message, say }) => {
-  await say(
-    `Good Morning Vas Members!🌼\n Are you ready to become a Algo King? \nPlease add a check emoji✔️`
-  );
+  await sendMorningMessage();
 });
 
 app.message("랜덤 리뷰어", async ({ message, say }) => {
