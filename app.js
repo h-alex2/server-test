@@ -1,8 +1,19 @@
 const { App, ExpressReceiver } = require("@slack/bolt");
+const expressApp = require("express");
 const http = require("http");
 const schedule = require("node-schedule");
 const generateRandomReviewer = require("./utils/generateRandomReviewer.js");
 const axios = require("axios");
+
+const expressReceiver = new ExpressReceiver({
+  signingSecret: process.env.SLACK_SIGNING_SECRET,
+});
+
+expressReceiver.router.get("/", (req, res) => {
+  res.send({ data: "hello" });
+});
+
+expressReceiver.use("/", expressReceiver.router);
 
 const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
@@ -10,10 +21,9 @@ const app = new App({
   port: process.env.PORT || 3000,
 });
 
-const id = setInterval(() => {
+const id = setInterval(async () => {
   if (removeId) clearInterval(removeId);
-
-  axios.get("https://server-test-31xt.onrender.com");
+  await axios.get("https://server-test-31xt.onrender.com");
 }, 600000);
 
 const removeId = setInterval(() => {
