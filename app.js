@@ -200,11 +200,50 @@ app.message("스케줄 테스트", async ({ message, say }) => {
   await sendMorningMessage();
 });
 
-app.message("랜덤 리뷰어", async ({ message, say }) => {
-  console.log(message)
-  const reviewer = generateRandomReviewer(allMembers);
+app.message("굿모닝", async ({ message, say }) => {
+  await app.client.chat.postMessage({
+    token: process.env.SLACK_BOT_TOKEN,
+    channel: process.env.MESSAGE_CHANNEL,
+    text: "Good Morning",
+    blocks: [
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: `Good Morning Vas Members!🌼\n Are you ready to become a Algo King?`,
+        },
+      },
+      {
+        type: "divider",
+      },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: "Click the *Join* Button!🔥",
+        },
+        accessory: {
+          type: "button",
+          text: {
+            type: "plain_text",
+            text: "Join",
+          },
+          value: "click_me_123",
+          action_id: "button_click",
+        },
+      },
+    ],
+  });
+});
 
-  if (!reviewer) return;
+app.message("랜덤 리뷰어", async ({ message, say }) => {
+  let peoples = message.text.match(/\[.*\]/gi);
+
+  if (!peoples) return;
+
+  peoples += "";
+
+  const reviewer = generateRandomReviewer(peoples.slice(1, -1).split(","));
 
   await say(`⭐️Today's Reviewer \n ${reviewer}`);
 });
